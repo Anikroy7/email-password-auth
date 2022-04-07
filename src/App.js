@@ -10,7 +10,7 @@ const auth = getAuth(app)
 
 
 function App() {
-
+  const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -24,6 +24,12 @@ function App() {
   }
 
   const handelFromSubmit = event => {
+
+
+    if (! /(?=.*[A-Z])/.test(password)) {
+      setError('!!!!!please ensure at least one uppercase character')
+    }
+
     createUserWithEmailAndPassword(auth, email, password)
       .then(result => {
         console.log(result.user);
@@ -42,16 +48,19 @@ function App() {
         <Form onSubmit={handelFromSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
-            <Form.Control onBlur={handelEmailBlur} type="email" placeholder="Enter email" required />
+            <Form.Control required onBlur={handelEmailBlur} type="email" placeholder="Enter email" />
+
             <Form.Text className="text-muted">
               We'll never share your email with anyone else.
             </Form.Text>
+
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control onBlur={handelPasswordBlur} type="password" placeholder="Password" />
+            <Form.Control required onBlur={handelPasswordBlur} type="password" placeholder="Password" />
           </Form.Group>
+          <h6 className="text-danger">{error}</h6>
           <Button variant="primary" type="submit">
             Submit
           </Button>
