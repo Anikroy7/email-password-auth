@@ -1,29 +1,39 @@
-import { getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import app from './firebase.init';
 import Form from 'react-bootstrap/Form'
 import { Button } from "react-bootstrap";
+import { useState } from "react";
 
 const auth = getAuth(app)
 
-const handelEmailBlur = event => {
-  console.log(event.target.value);
-}
-
-
-const handelPasswordBlur = event => {
-
-  console.log(event.target.value);
-}
-
-const handelFromSubmit = event => {
-  console.log('anik submited');
-  event.preventDefault();
-}
-
 
 function App() {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handelEmailBlur = event => {
+    setEmail(event.target.value);
+  }
+
+  const handelPasswordBlur = event => {
+
+    setPassword(event.target.value);
+  }
+
+  const handelFromSubmit = event => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(result => {
+        console.log(result.user);
+      })
+      .catch(error => {
+        console.error(error);
+      })
+    event.preventDefault();
+  }
+
   return (
     <div className="App">
       <h2 className="text-secondary">Register Please !!</h2>
