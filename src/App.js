@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import app from './firebase.init';
@@ -69,6 +69,15 @@ function App() {
     event.preventDefault();
   }
 
+  const forgetPasswordHandeler = () => {
+
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        console.log('new email sent');
+      })
+
+  }
+
   const emailVarified = () => {
     sendEmailVerification(auth.currentUser)
       .then(() => {
@@ -101,6 +110,7 @@ function App() {
             <Form.Check type="checkbox" label="Already registered ?" />
           </Form.Group>
           <h5 className="text-danger">{error}</h5>
+          <Button onClick={forgetPasswordHandeler} variant="link">forget password</Button> <br />
           <Button variant="primary" type="submit">
             {resgistered ? 'login' : 'register'}
           </Button>
