@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import app from './firebase.init';
@@ -30,7 +30,7 @@ function App() {
   }
 
   const handelFromSubmit = event => {
-    event.preventDefault();
+
 
     if (!/(?=.*[A-Z])/.test(password)) {
 
@@ -40,14 +40,30 @@ function App() {
     }
     setError('')
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(result => {
-        console.log(result.user);
-      })
-      .catch(error => {
-        console.log(error)
-        setError(error.message);
-      })
+    if (resgistered) {
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(result => {
+          console.log(result.user);
+        })
+        .catch(error => {
+          setError(error.message)
+        })
+
+    }
+    else {
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(result => {
+          console.log(result.user);
+        })
+        .catch(error => {
+          console.log(error)
+          setError(error.message);
+        })
+    }
+
+    event.preventDefault();
   }
 
   return (
