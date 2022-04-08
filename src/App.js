@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import app from './firebase.init';
@@ -55,6 +55,9 @@ function App() {
 
       createUserWithEmailAndPassword(auth, email, password)
         .then(result => {
+          setEmail('')
+          setPassword('')
+          emailVarified()
           console.log(result.user);
         })
         .catch(error => {
@@ -64,6 +67,14 @@ function App() {
     }
 
     event.preventDefault();
+  }
+
+  const emailVarified = () => {
+    sendEmailVerification(auth.currentUser)
+      .then(() => {
+        console.log('email varification send');
+      })
+
   }
 
   return (
