@@ -13,6 +13,7 @@ function App() {
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [resgistered, setRegistered] = useState(false);
 
   const handelEmailBlur = event => {
     setEmail(event.target.value);
@@ -21,6 +22,11 @@ function App() {
   const handelPasswordBlur = event => {
 
     setPassword(event.target.value);
+  }
+  const handelAlreadyRegistered = event => {
+
+    setRegistered(event.target.checked)
+
   }
 
   const handelFromSubmit = event => {
@@ -39,15 +45,16 @@ function App() {
         console.log(result.user);
       })
       .catch(error => {
-        console.error(error);
+        console.log(error)
+        setError(error.message);
       })
   }
 
   return (
-    <div className="App">
-      <h2 className="text-secondary">Register Please !!</h2>
-      <section className="w-50 mx-auto mt-4 border p-2 rounded">
+    <div>
 
+      <section className="w-50 mx-auto mt-4 border p-3 rounded">
+        <h2 className="text-secondary text-center">{resgistered ? "Login" : 'register'} Please !!</h2>
         <Form onSubmit={handelFromSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
@@ -62,15 +69,17 @@ function App() {
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control onBlur={handelPasswordBlur} type="password" placeholder="Password" required />
-
+          </Form.Group>
+          <Form.Group onChange={handelAlreadyRegistered} className="mb-3  text-start" controlId="formBasicCheckbox">
+            <Form.Check type="checkbox" label="Already registered ?" />
           </Form.Group>
           <h5 className="text-danger">{error}</h5>
           <Button variant="primary" type="submit">
-            Submit
+            {resgistered ? 'login' : 'register'}
           </Button>
         </Form>
       </section>
-    </div>
+    </div >
   );
 }
 
