@@ -24,11 +24,15 @@ function App() {
   }
 
   const handelFromSubmit = event => {
+    event.preventDefault();
 
+    if (!/(?=.*[A-Z])/.test(password)) {
 
-    if (! /(?=.*[A-Z])/.test(password)) {
-      setError('!!!!!please ensure at least one uppercase character')
+      setError('please give at least one uppercase character ');
+      return;
+
     }
+    setError('')
 
     createUserWithEmailAndPassword(auth, email, password)
       .then(result => {
@@ -37,7 +41,6 @@ function App() {
       .catch(error => {
         console.error(error);
       })
-    event.preventDefault();
   }
 
   return (
@@ -48,7 +51,7 @@ function App() {
         <Form onSubmit={handelFromSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
-            <Form.Control required onBlur={handelEmailBlur} type="email" placeholder="Enter email" />
+            <Form.Control onBlur={handelEmailBlur} type="email" placeholder="Enter email" required />
 
             <Form.Text className="text-muted">
               We'll never share your email with anyone else.
@@ -58,9 +61,10 @@ function App() {
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control required onBlur={handelPasswordBlur} type="password" placeholder="Password" />
+            <Form.Control onBlur={handelPasswordBlur} type="password" placeholder="Password" required />
+
           </Form.Group>
-          <h6 className="text-danger">{error}</h6>
+          <h5 className="text-danger">{error}</h5>
           <Button variant="primary" type="submit">
             Submit
           </Button>
